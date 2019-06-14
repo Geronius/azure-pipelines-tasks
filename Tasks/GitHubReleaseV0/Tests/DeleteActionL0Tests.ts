@@ -1,4 +1,4 @@
-import tmrm = require('vsts-task-lib/mock-run');
+import tmrm = require('azure-pipelines-task-lib/mock-run');
 import * as path from 'path';
 import { Inputs } from '../operations/Constants';
 import * as sinon from 'sinon';
@@ -14,6 +14,7 @@ export class DeleteActionL0Tests {
         tr.setInput(Inputs.gitHubConnection, "connection");
         tr.setInput(Inputs.repositoryName, "repo");
         tr.setInput(Inputs.action, "delete");
+        tr.setInput(Inputs.tag, "tag");
 
         // Stub methods
         this.stub();

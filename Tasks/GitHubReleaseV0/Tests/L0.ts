@@ -1,6 +1,6 @@
 import * as path from 'path';
 import * as assert from 'assert';
-import * as ttm from 'vsts-task-lib/mock-test';
+import * as ttm from 'azure-pipelines-task-lib/mock-test';
 import { TestString } from './TestStrings';
 
 describe('GitHubReleaseTaskTests Suite', function() {
@@ -56,7 +56,7 @@ describe('GitHubReleaseTaskTests Suite', function() {
         done();
     });
 
-    it('Validate task fails with correct error when action = create and not tag is present.', (done: MochaDone) => {
+    it('Validate task fails with correct error when action = create and no tag is present.', (done: MochaDone) => {
         let tp = path.join(__dirname, 'CreateAction2L0Tests.js');
         let tr : ttm.MockTestRunner = new ttm.MockTestRunner(tp);
         tr.run();

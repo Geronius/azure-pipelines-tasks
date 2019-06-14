@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as assert from 'assert';
-import * as ttm from 'vsts-task-lib/mock-test';
-import tl = require('vsts-task-lib');
+import * as ttm from 'azure-pipelines-task-lib/mock-test';
+import tl = require('azure-pipelines-task-lib');
 import * as shared from './TestShared';
 
 describe('Kubernetes Suite', function() {
@@ -97,15 +97,15 @@ describe('Kubernetes Suite', function() {
         process.env[shared.TestEnvVars.command] = shared.Commands.get;
         process.env[shared.TestEnvVars.arguments] = "pods";    
         process.env[shared.TestEnvVars.versionOrLocation] = "version";
-        process.env[shared.TestEnvVars.versionSpec] = "1.7.0";
+        process.env[shared.TestEnvVars.versionSpec] = "1.13.2";
         process.env[shared.isKubectlPresentOnMachine] = "false";
         tr.run();
 
         assert(tr.invokedToolCount == 1, 'should have invoked tool one times. actual: ' + tr.invokedToolCount);
         assert(tr.stderr.length == 0 || tr.errorIssues.length, 'should not have written to stderr');
         assert(tr.succeeded, 'task should have succeeded');
-        assert(tr.stdout.indexOf(`Got kubectl version v1.7.0`) != -1, "Got the specific version of kubectl");
-        assert(tr.stdout.indexOf(`Downloaded kubectl version v1.7.0`) != -1, "Downloaded correct version of kubectl");
+        assert(tr.stdout.indexOf(`Got kubectl version v1.13.2`) != -1, "Got the specific version of kubectl");
+        assert(tr.stdout.indexOf(`Downloaded kubectl version v1.13.2`) != -1, "Downloaded correct version of kubectl");
         assert(tr.stdout.indexOf(`[command]${shared.formatPath("newUserDir/kubectl.exe")} get pods -o json`) != -1, "kubectl get should run");
         console.log(tr.stderr);
         done();
