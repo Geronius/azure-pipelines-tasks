@@ -3,6 +3,7 @@
     "name": "SSH",
     "friendlyName": "SSH",
     "description": "Run shell commands or a script on a remote machine using SSH",
+    "helpUrl": "http://go.microsoft.com/fwlink/?LinkId=821892",
     "helpMarkDown": "[More Information](http://go.microsoft.com/fwlink/?LinkId=821892)",
     "category": "Deploy",
     "visibility": [
@@ -16,7 +17,7 @@
     "author": "Microsoft Corporation",
     "version": {
         "Major": 0,
-        "Minor": 147,
+        "Minor": 148,
         "Patch": 0
     },
     "demands": [],

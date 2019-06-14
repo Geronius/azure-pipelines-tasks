@@ -85,6 +85,16 @@ export class Kubectl {
         return command.execSync();
     }
 
+    public getResource(resourceType: string, name: string): IExecSyncResult {
+        var command = tl.tool(this.kubectlPath);
+        command.arg("get");
+        command.arg(resourceType + "/" + name);
+        command.arg(["--namespace", this.namespace]);
+        command.arg(["-o", "json"])
+        command.arg("--export=true");
+        return command.execSync();
+    }
+
     public getResources(applyOutput: string, filterResourceTypes: string[]): Resource[] {
         let outputLines = applyOutput.split("\n");
         let results = [];
@@ -103,6 +113,56 @@ export class Kubectl {
 
         return results;
     }
+
+    public scale(resourceType, resourceName, replicas) {
+        var command = tl.tool(this.kubectlPath);
+        command.arg("scale");
+        command.arg(resourceType + "/" + resourceName);
+        command.arg(`--replicas=${replicas}`);
+        command.arg(["--namespace", this.namespace]);
+        return command.execSync();
+    }
+
+    public patch(resourceType, resourceName, patch, strategy) {
+        var command = tl.tool(this.kubectlPath);
+        command.arg("patch");
+        command.arg([resourceType, resourceName]);
+        command.arg(["--namespace", this.namespace]);
+        command.arg(`--type=${strategy}`);
+        command.arg([`-p`, patch]);
+        return command.execSync();
+    }
+
+    public delete(files: string | string[], types: string, names: string[], labels: string, cascade: boolean, gracePeriod: string) {
+        var command = tl.tool(this.kubectlPath);
+        command.arg("delete");
+        if (!!files) {
+            command.arg(["-f", this.createInlineArray(files)]);
+        } else {
+            if (!!types) {
+                command.arg(types);
+            }
+            if (!!names) {
+                command.arg(names.join(" "));
+            } else {
+                if (!!labels) {
+                    command.arg(["-l", labels]);
+                }
+            }
+        }
+        command.arg(`--namespace=${this.namespace}`);
+        command.arg(`--cascade=${cascade}`);
+        if (!!gracePeriod) {
+            command.arg(`--grace-period=${gracePeriod}`);
+            if (gracePeriod == "0") {
+                command.arg(`--force=true`);
+            }
+        }
+        command.arg(`--wait=true`);
+        command.arg(`--ignore-not-found=true`);
+        return command.execSync();
+    }
+
 
     private createInlineArray(str: string | string[]): string {
         if (typeof str === "string") return str;
